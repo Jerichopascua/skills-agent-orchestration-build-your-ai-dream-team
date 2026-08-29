@@ -1,0 +1,46 @@
+{
+  "projects": [
+    {
+      "name": "Northstar Mobile",
+      "owner": "Maya Chen",
+      "status": "On track",
+      "recentActivity": "Design system handoff completed · 2 hours ago",
+      "priority": "High"
+    },
+    {
+      "name": "Atlas Analytics",
+      "owner": "Jordan Ellis",
+      "status": "On track",
+      "recentActivity": "Weekly retention report shipped to stakeholders",
+      "priority": "Medium"
+    },
+    {
+      "name": "Greenline Platform",
+      "owner": "Sam Rivera",
+      "status": "At risk",
+      "recentActivity": "API integration is blocked by an upstream dependency",
+      "priority": "High"
+    },
+    {
+      "name": "Horizon Rebrand",
+      "owner": "Priya Shah",
+      "status": "Planning",
+      "recentActivity": "Kickoff scheduled with the creative team for Thursday",
+      "priority": "Medium"
+    },
+    {
+      "name": "Signal Infrastructure",
+      "owner": "Leo Martins",
+      "status": "On track",
+      "recentActivity": "Observability migration reached 64% completion",
+      "priority": "Low"
+    },
+    {
+      "name": "Beacon Onboarding",
+      "owner": "Avery Brooks",
+      "status": "On track",
+      "recentActivity": "First-run experience tests passed with a 92% success rate",
+      "priority": "Low"
+    }
+  ]
+}

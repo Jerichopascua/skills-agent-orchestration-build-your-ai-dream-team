@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Project Pulse is a focused view of project health, ownership, and recent momentum.">
+  <title>Project Pulse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Project Pulse home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>Project Pulse</span>
+      </a>
+      <div class="topbar-actions">
+        <span class="sync-status"><span class="status-dot" aria-hidden="true"></span>Live workspace</span>
+        <button class="avatar" type="button" aria-label="Open profile menu">AR</button>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Monday, August 29, 2026 <span class="eyebrow-line"></span> Weekly overview</p>
+          <h1 id="page-title">Project Pulse</h1>
+          <p class="hero-copy">A clear view of what’s moving, what needs attention, and where your team is creating momentum.</p>
+        </div>
+        <button class="primary-action" type="button">
+          <span aria-hidden="true">+</span> New project
+        </button>
+      </section>
+
+      <section class="summary-grid" aria-label="Workspace summary">
+        <article class="summary-card">
+          <div class="summary-icon purple" aria-hidden="true">◎</div>
+          <div><p class="summary-label">Active projects</p><p class="summary-value" id="active-count">—</p></div>
+          <span class="trend positive">+2 this month</span>
+        </article>
+        <article class="summary-card">
+          <div class="summary-icon green" aria-hidden="true">↗</div>
+          <div><p class="summary-label">On track</p><p class="summary-value" id="on-track-count">—</p></div>
+          <span class="trend positive">78% of total</span>
+        </article>
+        <article class="summary-card">
+          <div class="summary-icon amber" aria-hidden="true">!</div>
+          <div><p class="summary-label">Needs attention</p><p class="summary-value" id="attention-count">—</p></div>
+          <span class="trend neutral">Review today</span>
+        </article>
+      </section>
+
+      <section class="projects-section" aria-labelledby="projects-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="projects-heading">Your projects</h2>
+            <p>Stay close to the work that matters most.</p>
+          </div>
+          <div class="view-controls" aria-label="Project view options">
+            <button class="view-button active" type="button" aria-label="Grid view" aria-pressed="true">▦</button>
+            <button class="view-button" type="button" aria-label="List view" aria-pressed="false">☷</button>
+          </div>
+        </div>
+        <div class="project-grid" id="project-list" aria-live="polite">
+          <p class="loading-message">Loading your projects…</p>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <span>Project Pulse workspace</span>
+      <span>Last updated a few seconds ago <span class="footer-dot" aria-hidden="true">•</span> All systems operational</span>
+    </footer>
+  </div>
+
+  <script>
+    const projectList = document.querySelector("#project-list");
+
+    function projectCard(project) {
+      const statusClass = project.status.toLowerCase().replace(/\s+/g, "-");
+      const priorityClass = project.priority.toLowerCase();
+      return `
+        <article class="project-card">
+          <div class="card-topline">
+            <span class="project-status ${statusClass}"><span class="status-dot" aria-hidden="true"></span>${project.status}</span>
+            <span class="priority ${priorityClass}">${project.priority} priority</span>
+          </div>
+          <h3>${project.name}</h3>
+          <p class="activity">${project.recentActivity}</p>
+          <div class="card-footer">
+            <span class="owner"><span class="owner-avatar" aria-hidden="true">${project.owner.split(" ").map(name => name[0]).join("")}</span><span>Owned by <strong>${project.owner}</strong></span></span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </div>
+        </article>`;
+    }
+
+    fetch("project-data.json")
+      .then(response => {
+        if (!response.ok) throw new Error("Project data could not be loaded.");
+        return response.json();
+      })
+      .then(data => {
+        const projects = data.projects;
+        projectList.innerHTML = projects.map(projectCard).join("");
+        document.querySelector("#active-count").textContent = projects.length;
+        document.querySelector("#on-track-count").textContent = projects.filter(project => project.status === "On track").length;
+        document.querySelector("#attention-count").textContent = projects.filter(project => project.status !== "On track").length;
+      })
+      .catch(() => {
+        projectList.innerHTML = '<p class="error-message" role="alert">Project data is unavailable right now. Please refresh to try again.</p>';
+      });
+  </script>
+</body>
+</html>
